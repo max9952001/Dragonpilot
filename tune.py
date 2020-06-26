@@ -39,8 +39,8 @@ def getch():
 button_delay = 0.2
 
 dragon = dragon_conf()
-#dragon.conf['tuneGernby'] = "1"
-#dragon.write_config(dragon.conf)
+dragon.conf['tuneGernby'] = "1"
+dragon.write_config(dragon.conf)
 param = ["iLG", "oLG", "timeConstant", "actuatorEffect"]
 
 j = 0
@@ -122,6 +122,8 @@ while True:
     process.kill()
     break
 
+  if float(dragon.conf['tuneGernby']) != 1 and float(dragon.conf['tuneGernby']) != 0:
+    dragon.conf['tuneGernby'] = "1"
 
   if float(dragon.conf['iLG']) < 0 and float(dragon.conf['iLG']) != -1:
     dragon.conf['iLG'] = "0"
