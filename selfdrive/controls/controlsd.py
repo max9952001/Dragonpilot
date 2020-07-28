@@ -410,12 +410,17 @@ def data_send(sm, pm, CS, CI, CP, VM, state, events, actuators, v_cruise_kph, rk
     "canErrorCounter": can_error_counter,
   }
 
-  if CP.lateralTuning.which() == 'pid':
-    dat.controlsState.lateralControlState.pidState = lac_log
-  elif CP.lateralTuning.which() == 'lqr':
+  #if CP.lateralTuning.which() == 'pid':
+    #dat.controlsState.lateralControlState.pidState = lac_log
+  #elif CP.lateralTuning.which() == 'lqr':
+    #dat.controlsState.lateralControlState.lqrState = lac_log
+  #elif CP.lateralTuning.which() == 'indi':
+    #dat.controlsState.lateralControlState.indiState = lac_log
+
+  if CS.vEgo < 20.0:
     dat.controlsState.lateralControlState.lqrState = lac_log
-  elif CP.lateralTuning.which() == 'indi':
-    dat.controlsState.lateralControlState.indiState = lac_log
+  else:
+    dat.controlsState.lateralControlState.pidState = lac_log
   pm.send('controlsState', dat)
 
   # carState
