@@ -510,17 +510,12 @@ def controlsd_thread(sm=None, pm=None, can_sock=None):
   LoC = LongControl(CP, CI.compute_gb)
   VM = VehicleModel(CP)
 
-  #if CP.lateralTuning.which() == 'pid':
-    #LaC = LatControlPID(CP)
-  #elif CP.lateralTuning.which() == 'indi':
-    #LaC = LatControlINDI(CP)
-  #elif CP.lateralTuning.which() == 'lqr':
-    #LaC = LatControlLQR(CP)
-
-  if sm['carState'].vEgo < 20.0:
-    LaC = LatControlLQR(CP)
-  else:
+  if CP.lateralTuning.which() == 'pid':
     LaC = LatControlPID(CP)
+  elif CP.lateralTuning.which() == 'indi':
+    LaC = LatControlINDI(CP)
+  elif CP.lateralTuning.which() == 'lqr':
+    LaC = LatControlLQR(CP)
 
   state = State.disabled
   soft_disable_timer = 0
