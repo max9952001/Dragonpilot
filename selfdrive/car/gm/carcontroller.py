@@ -12,7 +12,7 @@ VisualAlert = car.CarControl.HUDControl.VisualAlert
 
 class CarControllerParams():
   def __init__(self):
-    self.STEER_MAX = 250
+    self.STEER_MAX = 300
     self.STEER_STEP = 2              # how often we update the steer cmd
     self.STEER_DELTA_UP = 7          # ~0.75s time to peak torque (255/50hz/0.75s)
     self.STEER_DELTA_DOWN = 14       # ~0.3s from peak torque to zero
@@ -84,10 +84,13 @@ class CarController():
     if (frame % P.STEER_STEP) == 0:
       lkas_enabled = enabled and not CS.out.steerWarning and CS.out.vEgo > P.MIN_STEER_SPEED
       if lkas_enabled:
-        if CS.out.vEgo < 20.0:
-          new_steer = actuators.steer * (P.STEER_MAX * 0.8)
+        if CS.out.vEgo < 10.0:
+          new_steer = actuators.steer * 230
+        elif CS.out.vEgo < 20.0:
+          new_steer = actuators.steer * 245
         else:
-          new_steer = actuators.steer * P.STEER_MAX
+          new_steer = actuators.steer * 255
+
         apply_steer = apply_std_steer_torque_limits(new_steer, self.apply_steer_last, CS.out.steeringTorque, P)
         self.steer_rate_limited = new_steer != apply_steer
       else:
@@ -127,7 +130,7 @@ class CarController():
       standstill = CS.pcm_acc_status == AccState.STANDSTILL
       at_full_stop = enabled and standstill and car_stopping
       near_stop = enabled and (CS.out.vEgo < P.NEAR_STOP_BRAKE_PHASE) and car_stopping
-      can_sends.append(gmcan.create_friction_brake_command(self.packer_ch, CanBus.CHASSIS, apply_brake, idx, near_stop, at_full_stop))
+      #can_sends.append(gmcan.create_friction_brake_command(self.packer_ch, CanBus.CHASSIS, apply_brake, idx, near_stop, at_full_stop))
 
       #at_full_stop = enabled and CS.out.standstill
       #can_sends.append(gmcan.create_gas_regen_command(self.packer_pt, CanBus.POWERTRAIN, apply_gas, idx, enabled, at_full_stop))

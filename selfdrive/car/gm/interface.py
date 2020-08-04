@@ -98,15 +98,9 @@ class CarInterface(CarInterfaceBase):
       ret.mass = 1616. + STD_CARGO_KG
       ret.safetyModel = car.CarParams.SafetyModel.gm
       ret.wheelbase = 2.60096
-      ret.steerRatio = 16.8
+      ret.steerRatio = 13.8
       ret.steerRatioRear = 0.
       ret.centerToFront = ret.wheelbase * 0.4 # wild guess
-
-      #ret.lateralTuning.init('indi')
-      #ret.lateralTuning.indi.innerLoopGain = 5.0
-      #ret.lateralTuning.indi.outerLoopGain = 4.2
-      #ret.lateralTuning.indi.timeConstant = 1.8
-      #ret.lateralTuning.indi.actuatorEffectiveness = 2.0
 
       ret.lateralTuning.init('lqr') #Rav4 from Arnepilot
       ret.lateralTuning.lqr.scale = 1500.0
